@@ -15,6 +15,26 @@ class Platypus
 		$this->tokens[$search] = $replace;
 	}
 	
+	public function setFor($search, $template, $searchArray, $replaceArray)
+	{
+		$content = "";
+		foreach ($replaceArray as $r) {
+			if (count($r) == count($searchArray)) {
+				$i = 0;
+				$temp = new Platypus($template);
+				foreach ($r as $string) {
+					$temp->set($searchArray[$i], $string);
+					++$i;
+				}
+				$content .= $temp->template();
+			} else {
+				$this->set($search, "ERROR: Non-matching arrays in setFor!");
+				return;
+			}
+		}
+		$this->set($search, $content);
+	}
+	
 	public function template()
 	{
 		if (!file_exists($this->template)) {
