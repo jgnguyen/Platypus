@@ -34,7 +34,21 @@ class Platypus
 		}
 		$this->set($search, $content);
 	}
-	
+
+	public function setIf($search, $replace, $condition)
+	{
+		$this->tokens[$search] = ($condition) ? $replace : '';
+	}
+
+	public function setForIf($search, $template, $searchArray, $replaceArray, $condition)
+	{
+		if ($condition) {
+			$this->setFor($search, $template, $searchArray, $replaceArray);
+		} else {
+			$this->set($search, '');
+		}
+	}
+
 	public function template()
 	{
 		if (!file_exists($this->template)) {
